@@ -19,33 +19,34 @@ test_imgs_output_folder = './output_images/test_images/'
 test_imgs = glob.glob('./test_images/test*.jpg')
 cars_imgs = glob.glob('./train_data/vehicles/**/*.png')
 notcars_imgs = glob.glob('./train_data/non-vehicles/**/*.png')
-sample_size = 500
+sample_size = 1000
+
+runSampleHOGFeatureExtraction = False
+
+if runSampleHOGFeatureExtraction is True:
+    # Extract HOG features from training images
+    sample_car_img = mpimg.imread('./train_data/vehicles/GTI_MiddleClose/image0190.png')
+    sample_notcar_img = mpimg.imread('./train_data/non-vehicles/GTI/image18.png')
+
+    vis.visualize(imgs=[sample_car_img, sample_notcar_img],
+                  titles=['Car', 'Not-Car'],
+                  fname=test_imgs_output_folder + 'car-notcar-image.jpg')
 
 
-# Extract HOG features from training images
-sample_car_img = mpimg.imread('./train_data/vehicles/GTI_MiddleClose/image0190.png')
-sample_notcar_img = mpimg.imread('./train_data/non-vehicles/GTI/image18.png')
+    # Perform a Histogram of Oriented Gradients (HOG) feature extraction on a labeled training set of images
+    # and train a classifier Linear SVM classifier
+    print('Performing HOG feature extraction...')
+    for idx, fname in enumerate(test_imgs):
+        print('  Processing', fname)
+        img = mpimg.imread(fname)
+        gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+        features, hog_img = get_hog_features(gray, orient=9, pix_per_cell=8, cell_per_block=2, vis=True, feature_vec=False)
 
-vis.visualize(imgs=[sample_car_img, sample_notcar_img],
-              titles=['Car', 'Not-Car'],
-              fname=test_imgs_output_folder + 'car-notcar-image.jpg')
-
-
-# Perform a Histogram of Oriented Gradients (HOG) feature extraction on a labeled training set of images
-# and train a classifier Linear SVM classifier
-print('Performing HOG feature extraction...')
-for idx, fname in enumerate(test_imgs):
-    print('  Processing', fname)
-    img = mpimg.imread(fname)
-    gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-    features, hog_img = get_hog_features(gray, orient=9, pix_per_cell=8, cell_per_block=2, vis=True, feature_vec=False)
-
-    vis.visualize(imgs=[img, hog_img],
-                  titles=['Original: ' + fname.split('/')[-1],
-                   'HOG feature extraction'],
-                  cmaps=[None, 'gray'],
-                  fname=test_imgs_output_folder + fname.split('/')[-1].split('.')[0] + '.jpg')
-
+        vis.visualize(imgs=[img, hog_img],
+                      titles=['Original: ' + fname.split('/')[-1],
+                       'HOG feature extraction'],
+                      cmaps=[None, 'gray'],
+                      fname=test_imgs_output_folder + fname.split('/')[-1].split('.')[0] + '.jpg')
 
 
 # (Optional) Apply a color transform and append binned color features, as well as histograms of color
@@ -70,9 +71,18 @@ cars = cars[0:sample_size]
 notcars = notcars[0:sample_size]
 
 
-
-
-
+sample_car_img1 = mpimg.imread(cars[0])
+sample_notcar_img1 = mpimg.imread(notcars[0])
+sample_car_img2 = mpimg.imread(cars[1])
+sample_notcar_img2 = mpimg.imread(notcars[1])
+sample_car_img3 = mpimg.imread(cars[2])
+sample_notcar_img3 = mpimg.imread(notcars[2])
+# vis.visualize(imgs=[sample_car_img1, sample_notcar_img1],
+#               titles=['Car1', 'Not-Car1'])
+# vis.visualize(imgs=[sample_car_img1, sample_notcar_img1, sample_car_img2],
+#               titles=['Car1', 'Not-Car1', 'Car2'], ncols=2)
+vis.visualize(imgs=[sample_car_img1, sample_car_img2, sample_car_img3, sample_notcar_img1, sample_notcar_img2, sample_notcar_img3],
+              titles=['Car1', 'Car2', 'Car3', 'Not-Car1', 'Not-Car2', 'Not-Car3'], ncols=3)
 
 
 
@@ -88,7 +98,7 @@ hist_bins = 16    # Number of histogram bins
 spatial_feat = True # Spatial features on or off
 hist_feat = True # Histogram features on or off
 hog_feat = True # HOG features on or off
-y_start_stop = [450, None] # Min and max in y to search in slide_window()
+y_start_stop = [300, None] # Min and max in y to search in slide_window()
 
 car_features = extract_features(cars, color_space=color_space,
                         spatial_size=spatial_size, hist_bins=hist_bins,
