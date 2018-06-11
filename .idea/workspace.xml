@@ -12,17 +12,17 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/CarND_Vehicle_Detection$main_py.coverage" NAME="main.py Coverage Results" MODIFIED="1528703682821" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/CarND_Vehicle_Detection$main_py.coverage" NAME="main.py Coverage Results" MODIFIED="1528710406078" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5006297">
+    <splitter split-orientation="horizontal" split-proportion="0.6605128">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/main.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="347">
-                  <caret line="160" column="67" selection-start-line="160" selection-start-column="67" selection-end-line="160" selection-end-column="67" />
+                <state relative-caret-position="542">
+                  <caret line="161" column="36" selection-start-line="161" selection-start-column="36" selection-end-line="161" selection-end-column="36" />
                   <folding>
                     <element signature="e#0#11#0" expanded="true" />
                   </folding>
@@ -64,7 +64,7 @@
           <file leaf-file-name="lesson_functions.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/CarND/lesson_functions.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="684">
+                <state relative-caret-position="191">
                   <caret line="132" column="34" lean-forward="true" selection-start-line="132" selection-start-column="34" selection-end-line="132" selection-end-column="34" />
                   <folding>
                     <element signature="e#0#32#0" expanded="true" />
@@ -267,10 +267,10 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="right" id="SciView" order="3" visible="true" weight="0.4084132" />
+      <window_info active="true" anchor="right" id="SciView" order="3" visible="true" weight="0.32641107" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39893618" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3986421" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
@@ -288,7 +288,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="5" />
+      <option name="time" value="6" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -415,7 +415,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/CarND/lesson_functions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="684">
+        <state relative-caret-position="191">
           <caret line="132" column="34" lean-forward="true" selection-start-line="132" selection-start-column="34" selection-end-line="132" selection-end-column="34" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
@@ -425,8 +425,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="347">
-          <caret line="160" column="67" selection-start-line="160" selection-start-column="67" selection-end-line="160" selection-end-column="67" />
+        <state relative-caret-position="542">
+          <caret line="161" column="36" selection-start-line="161" selection-start-column="36" selection-end-line="161" selection-end-column="36" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>

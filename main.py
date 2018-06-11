@@ -19,7 +19,7 @@ test_imgs_output_folder = './output_images/test_images/'
 test_imgs = glob.glob('./test_images/test*.jpg')
 cars_imgs = glob.glob('./train_data/vehicles/**/*.png')
 notcars_imgs = glob.glob('./train_data/non-vehicles/**/*.png')
-sample_size = 500
+sample_size = 3000
 
 runSampleHOGFeatureExtraction = False
 
@@ -93,12 +93,12 @@ orient = 9  # HOG orientations
 pix_per_cell = 8 # HOG pixels per cell
 cell_per_block = 2 # HOG cells per block
 hog_channel = 0 # Can be 0, 1, 2, or "ALL"
-spatial_size = (16, 16) # Spatial binning dimensions
+spatial_size = (24, 24) # Spatial binning dimensions
 hist_bins = 16    # Number of histogram bins
 spatial_feat = True # Spatial features on or off
 hist_feat = True # Histogram features on or off
 hog_feat = True # HOG features on or off
-y_start_stop = [300, None] # Min and max in y to search in slide_window()
+# y_start_stop = [400, None] # Min and max in y to search in slide_window()
 
 car_features = extract_features(cars, color_space=color_space,
                         spatial_size=spatial_size, hist_bins=hist_bins,
@@ -153,12 +153,20 @@ images = glob.glob('./test_images/test*.jpg')
 image = mpimg.imread(images[0])
 image = image.astype(np.float32)/255
 
-xy_windows = [(80, 80), (96, 96), (108, 108), (120, 120)]
+# xy_windows = [(64, 64), (96, 96)]
+# xy_overlaps = [(0.5, 0.5), (0.7, 0.7)]
+# y_start_stops = [[400, 600], [400, None]]
+
+xy_windows = [(96, 96), (120, 120)]
+xy_overlaps = [(0.5, 0.5), (0.5, 0.5)]
+y_start_stops = [[400, 520], [400, 550]]
+
+
 windows = []
 
-for xy_window in xy_windows:
+for (xy_window, xy_overlap, y_start_stop) in zip(xy_windows, xy_overlaps, y_start_stops):
     window = slide_window(image, x_start_stop=[None, None], y_start_stop=y_start_stop,
-                          xy_window=xy_window, xy_overlap=(0.6, 0.6))
+                          xy_window=xy_window, xy_overlap=xy_overlap)
     windows.extend(window)
 
 
