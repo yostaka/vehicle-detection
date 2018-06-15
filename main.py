@@ -14,6 +14,8 @@ from skimage.feature import hog
 from CarND.lesson_functions import *
 import CarND.visualize as vis
 
+from scipy.ndimage.measurements import label
+
 # Configurations
 test_imgs_output_folder = './output_images/test_images/'
 test_imgs = glob.glob('./test_images/test*.jpg')
@@ -173,6 +175,8 @@ for (xy_window, xy_overlap, y_start_stop) in zip(xy_windows, xy_overlaps, y_star
 
 for fname in images:
     image = mpimg.imread(fname)
+    heat = np.zeros_like(image[:, :, 0]).astype(np.float)
+
     draw_image = np.copy(image)
 
     # Uncomment the following line if you extracted training
@@ -195,6 +199,18 @@ for fname in images:
     plt.figure()
     plt.imshow(window_img)
     plt.show()
+
+    heat = add_heat(heat, hot_windows)
+    heat = apply_threshold(heat, 1)
+    labels = label(heat)
+    print(labels[1], 'cars found')
+    plt.imshow(labels[0], cmap='gray')
+    plt.show()
+
+    labeled_image = draw_labeled_bboxes(np.copy(mpimg.imread(fname)), labels)
+    plt.imshow(labeled_image)
+    plt.show()
+
 
 # Run pipeline on a video stream (start with the test_video.mp4 and later implement on full project_video.mp4)
 # and create a heat map of recurring detections frame by frame to reject outliers and follow detected vehicles

@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c0038c3f-a1ec-4b99-8ef2-d1cd3f55861c" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CarND/lesson_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/CarND/lesson_functions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
@@ -14,7 +13,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/CarND_Vehicle_Detection$main_py.coverage" NAME="main.py Coverage Results" MODIFIED="1528716507016" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/CarND_Vehicle_Detection$main_py.coverage" NAME="main.py Coverage Results" MODIFIED="1529105402256" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FileEditorManager">
     <splitter split-orientation="horizontal" split-proportion="0.48740554">
@@ -23,8 +22,8 @@
           <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/main.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="265">
-                  <caret line="21" column="17" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
+                <state relative-caret-position="992">
+                  <caret line="211" column="14" selection-start-line="211" selection-start-column="14" selection-end-line="211" selection-end-column="14" />
                   <folding>
                     <element signature="e#0#11#0" expanded="true" />
                   </folding>
@@ -66,8 +65,8 @@
           <file leaf-file-name="lesson_functions.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/CarND/lesson_functions.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="268">
-                  <caret line="69" column="9" lean-forward="true" selection-start-line="69" selection-start-column="9" selection-end-line="69" selection-end-column="9" />
+                <state relative-caret-position="782">
+                  <caret line="230" lean-forward="true" selection-start-line="230" selection-end-line="230" />
                   <folding>
                     <element signature="e#0#32#0" expanded="true" />
                   </folding>
@@ -104,8 +103,8 @@
         <option value="$PROJECT_DIR$/CarND/hog.py" />
         <option value="$PROJECT_DIR$/CarND/slidingwindow.py" />
         <option value="$PROJECT_DIR$/CarND/visualize.py" />
-        <option value="$PROJECT_DIR$/CarND/lesson_functions.py" />
         <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/CarND/lesson_functions.py" />
       </list>
     </option>
   </component>
@@ -118,11 +117,10 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="9" />
-    <option name="y" value="43" />
-    <option name="width" value="1920" />
-    <option name="height" value="1128" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="y" value="53" />
+    <option name="width" value="1680" />
+    <option name="height" value="978" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -256,7 +254,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="9" y="43" width="1920" height="1128" extended-state="0" />
+    <frame x="0" y="23" width="3008" height="1620" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" weight="0.19204655" />
@@ -264,13 +262,13 @@
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Python Console" order="7" weight="0.3297769" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32395732" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.21930401" />
       <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1544196" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.09777478" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="right" id="SciView" order="3" visible="true" weight="0.32641107" />
+      <window_info active="true" anchor="right" id="SciView" order="3" visible="true" weight="0.20667566" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3986421" />
@@ -416,22 +414,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CarND/lesson_functions.py">
+    <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="268">
-          <caret line="69" column="9" lean-forward="true" selection-start-line="69" selection-start-column="9" selection-end-line="69" selection-end-column="9" />
+        <state relative-caret-position="992">
+          <caret line="211" column="14" selection-start-line="211" selection-start-column="14" selection-end-line="211" selection-end-column="14" />
           <folding>
-            <element signature="e#0#32#0" expanded="true" />
+            <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/CarND/lesson_functions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="265">
-          <caret line="21" column="17" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
+        <state relative-caret-position="782">
+          <caret line="230" lean-forward="true" selection-start-line="230" selection-end-line="230" />
           <folding>
-            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#0#32#0" expanded="true" />
           </folding>
         </state>
       </provider>
