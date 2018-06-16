@@ -23,6 +23,12 @@ cars_imgs = glob.glob('./train_data/vehicles/**/*.png')
 notcars_imgs = glob.glob('./train_data/non-vehicles/**/*.png')
 sample_size = 500
 
+generateVideo = True
+video_input = 'test_video.mp4'
+video_output = 'output_images/video_output/test.mp4'
+# video_input = 'project_video.mp4'
+# video_output = 'output_images/video_output/car_detection.mp4'
+
 runSampleHOGFeatureExtraction = False
 
 if runSampleHOGFeatureExtraction is True:
@@ -40,11 +46,11 @@ if runSampleHOGFeatureExtraction is True:
     print('Performing HOG feature extraction...')
     for idx, fname in enumerate(test_imgs):
         print('  Processing', fname)
-        img = mpimg.imread(fname)
-        gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+        image = mpimg.imread(fname)
+        gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
         features, hog_img = get_hog_features(gray, orient=9, pix_per_cell=8, cell_per_block=2, vis=True, feature_vec=False)
 
-        vis.visualize(imgs=[img, hog_img],
+        vis.visualize(imgs=[image, hog_img],
                       titles=['Original: ' + fname.split('/')[-1],
                        'HOG feature extraction'],
                       cmaps=[None, 'gray'],
@@ -150,15 +156,9 @@ t = time.time()
 
 
 images = glob.glob('./test_images/test*.jpg')
-# image = mpimg.imread('./test_images/test1.jpg')
-# draw_image = np.copy(image)
 
 image = mpimg.imread(images[0])
 image = image.astype(np.float32)/255
-
-# xy_windows = [(64, 64), (96, 96)]
-# xy_overlaps = [(0.5, 0.5), (0.7, 0.7)]
-# y_start_stops = [[400, 600], [400, None]]
 
 xy_windows = [(96, 96), (120, 120)]
 xy_overlaps = [(0.5, 0.5), (0.5, 0.5)]
@@ -173,43 +173,54 @@ for (xy_window, xy_overlap, y_start_stop) in zip(xy_windows, xy_overlaps, y_star
     windows.extend(window)
 
 
-for fname in images:
-    image = mpimg.imread(fname)
-    heat = np.zeros_like(image[:, :, 0]).astype(np.float)
+def process_image(img, show_img=False):
+    heat = np.zeros_like(img[:, :, 0]).astype(np.float)
 
-    draw_image = np.copy(image)
+    draw_image = np.copy(img)
+    labeled_image = np.copy(img)
 
     # Uncomment the following line if you extracted training
     # data from .png images (scaled 0 to 1 by mpimg) and the
     # image you are searching is a .jpg (scaled 0 to 255)
-    image = image.astype(np.float32)/255
+    img = img.astype(np.float32)/255
     #
     # windows = slide_window(image, x_start_stop=[None, None], y_start_stop=y_start_stop,
     #                        xy_window=(140, 140), xy_overlap=(0.2, 0.2))
 
-    hot_windows = search_windows(image, windows, svc, X_scaler, color_space=color_space,
+    hot_windows = search_windows(img, windows, svc, X_scaler, color_space=color_space,
                                  spatial_size=spatial_size, hist_bins=hist_bins,
                                  orient=orient, pix_per_cell=pix_per_cell,
                                  cell_per_block=cell_per_block,
                                  hog_channel=hog_channel, spatial_feat=spatial_feat,
                                  hist_feat=hist_feat, hog_feat=hog_feat)
 
-    window_img = draw_boxes(draw_image, hot_windows, color=(0, 0, 255), thick=6)
+    if show_img is True:
+        window_img = draw_boxes(draw_image, hot_windows, color=(0, 0, 255), thick=6)
 
-    plt.figure()
-    plt.imshow(window_img)
-    plt.show()
+        plt.figure()
+        plt.imshow(window_img)
+        plt.show()
 
     heat = add_heat(heat, hot_windows)
     heat = apply_threshold(heat, 1)
     labels = label(heat)
-    print(labels[1], 'cars found')
-    plt.imshow(labels[0], cmap='gray')
-    plt.show()
 
-    labeled_image = draw_labeled_bboxes(np.copy(mpimg.imread(fname)), labels)
-    plt.imshow(labeled_image)
-    plt.show()
+    if show_img is True:
+        plt.imshow(labels[0], cmap='gray')
+        plt.show()
+
+    labeled_image = draw_labeled_bboxes(labeled_image, labels)
+
+    if show_img is True:
+        plt.imshow(labeled_image)
+        plt.show()
+
+    return labeled_image
+
+
+for fname in images:
+    image = mpimg.imread(fname)
+    process_image(image, show_img=True)
 
 
 # Run pipeline on a video stream (start with the test_video.mp4 and later implement on full project_video.mp4)
@@ -218,5 +229,12 @@ for fname in images:
 
 # Estimate a bounding box for vehicles detected
 
+
+# Build video clip with car detection
+
+if generateVideo is True:
+    clip1 = VideoFileClip(video_input)
+    video_clip = clip1.fl_image(process_image)
+    video_clip.write_videofile(video_output, audio=False)
 
 print("Completed all processes")
