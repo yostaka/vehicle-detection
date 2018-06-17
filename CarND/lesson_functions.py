@@ -253,4 +253,8 @@ def draw_labeled_bboxes(img, labels):
     return img
 
 
+def draw_windows(img, windows):
+    for window in windows:
+        cv2.rectangle(img, window[0], window[1], (0, 0, 255), 6)
+    return img
 

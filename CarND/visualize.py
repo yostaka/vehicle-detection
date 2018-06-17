@@ -20,13 +20,23 @@ def visualize(imgs, titles, cmaps=None, fname=None, ncols=None):
     f, ax = plt.subplots(nrows=nrows, ncols=ncols, figsize=(24, 9))
     f.tight_layout()
 
-    for idx in range(num_images):
-        if cmaps is None:
-            ax[idx // ncols, idx % ncols].imshow(imgs[idx])
-            ax[idx // ncols, idx % ncols].set_title(titles[idx], fontsize=30)
-        else:
-            ax[idx // ncols, idx % ncols].imshow(imgs[idx], cmap=cmaps[idx])
-            ax[idx // ncols, idx % ncols].set_title(titles[idx], fontsize=30)
+    if nrows == 1:
+        for idx in range(num_images):
+            if cmaps is None:
+                ax[idx].imshow(imgs[idx])
+                ax[idx].set_title(titles[idx], fontsize=30)
+            else:
+                ax[idx].imshow(imgs[idx], cmap=cmaps[idx])
+                ax[idx].set_title(titles[idx], fontsize=30)
+    else:
+        for idx in range(num_images):
+            if cmaps is None:
+                ax[idx // ncols, idx % ncols].imshow(imgs[idx])
+                ax[idx // ncols, idx % ncols].set_title(titles[idx], fontsize=30)
+            else:
+                ax[idx // ncols, idx % ncols].imshow(imgs[idx], cmap=cmaps[idx])
+                ax[idx // ncols, idx % ncols].set_title(titles[idx], fontsize=30)
+
 
     # TODO: adjust spacing around figures
     plt.subplots_adjust(left=0., right=1, top=0.9, bottom=0.)

@@ -23,13 +23,13 @@ cars_imgs = glob.glob('./train_data/vehicles/**/*.png')
 notcars_imgs = glob.glob('./train_data/non-vehicles/**/*.png')
 sample_size = 500
 
-generateVideo = True
+generateVideo = False
 video_input = 'test_video.mp4'
 video_output = 'output_images/video_output/test.mp4'
 # video_input = 'project_video.mp4'
 # video_output = 'output_images/video_output/car_detection.mp4'
 
-runSampleHOGFeatureExtraction = False
+runSampleHOGFeatureExtraction = True
 
 if runSampleHOGFeatureExtraction is True:
     # Extract HOG features from training images
@@ -39,7 +39,6 @@ if runSampleHOGFeatureExtraction is True:
     vis.visualize(imgs=[sample_car_img, sample_notcar_img],
                   titles=['Car', 'Not-Car'],
                   fname=test_imgs_output_folder + 'car-notcar-image.jpg')
-
 
     # Perform a Histogram of Oriented Gradients (HOG) feature extraction on a labeled training set of images
     # and train a classifier Linear SVM classifier
@@ -160,9 +159,38 @@ images = glob.glob('./test_images/test*.jpg')
 image = mpimg.imread(images[0])
 image = image.astype(np.float32)/255
 
-xy_windows = [(96, 96), (120, 120)]
-xy_overlaps = [(0.5, 0.5), (0.5, 0.5)]
-y_start_stops = [[400, 520], [400, 550]]
+xy_windows = []
+xy_overlaps = []
+y_start_stops = []
+
+
+xy_windows.append((64, 64))
+xy_overlaps.append((0.5, 0.5))
+y_start_stops.append([390, 450])
+
+xy_windows.append((96, 96))
+xy_overlaps.append((0.5, 0.5))
+y_start_stops.append([380, 550])
+
+xy_windows.append((144, 144))
+xy_overlaps.append((0.6, 0.6))
+y_start_stops.append([370, 650])
+
+# xy_windows.append((220, 220))
+# xy_overlaps.append((0.8, 0.8))
+# y_start_stops.append([360, 650])
+
+# xy_windows.append((120, 120))
+# xy_overlaps.append((0.5, 0.9))
+# y_start_stops.append([380, 550])
+
+# xy_windows.append((160, 160))
+# xy_overlaps.append((0.5, 0.5))
+# y_start_stops.append([380, 650])
+
+# xy_windows = [(48, 48), (96, 96), (120, 120), (180, 180), (200, 120)]
+# xy_overlaps = [(0.5, 0.5), (0.5, 0.5), (0.5, 0.5), (0.7, 0.7), (0.7, 0.7)]
+# y_start_stops = [[400, 550], [400, 550], [400, 600], [400, 650], [400, 650]]
 
 
 windows = []
@@ -171,6 +199,11 @@ for (xy_window, xy_overlap, y_start_stop) in zip(xy_windows, xy_overlaps, y_star
     window = slide_window(image, x_start_stop=[None, None], y_start_stop=y_start_stop,
                           xy_window=xy_window, xy_overlap=xy_overlap)
     windows.extend(window)
+
+
+window_img = draw_windows(image, windows)
+plt.imshow(window_img)
+plt.show()
 
 
 def process_image(img, show_img=False):
@@ -202,7 +235,7 @@ def process_image(img, show_img=False):
         plt.show()
 
     heat = add_heat(heat, hot_windows)
-    heat = apply_threshold(heat, 1)
+    heat = apply_threshold(heat, 3)
     labels = label(heat)
 
     if show_img is True:
