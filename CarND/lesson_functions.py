@@ -2,6 +2,7 @@ import matplotlib.image as mpimg
 import numpy as np
 import cv2
 from skimage.feature import hog
+import CarND.visualize as vis
 
 
 # Define a function to return HOG features and visualization
@@ -128,13 +129,15 @@ def draw_boxes(img, bboxes, color=(0, 0, 255), thick=6):
     # Return the image copy with boxes drawn
     return imcopy
 
+
 # Define a function to extract features from a single image window
 # This function is very similar to extract_features()
 # just for a single image rather than list of images
 def single_img_features(img, color_space='RGB', spatial_size=(32, 32),
                         hist_bins=32, orient=9,
                         pix_per_cell=8, cell_per_block=2, hog_channel=0,
-                        spatial_feat=True, hist_feat=True, hog_feat=True):
+                        spatial_feat=True, hist_feat=True, hog_feat=True,
+                        show_img=False):
     # 1)Define an empty list to receive features
     img_features = []
 
@@ -153,6 +156,9 @@ def single_img_features(img, color_space='RGB', spatial_size=(32, 32),
     else:
         feature_image = np.copy(img)
 
+    # Append flatten feature_image to img_features
+    # img_features.append(feature_image.ravel())
+
     # 3)Compute spatial features if flag is set
     if spatial_feat is True:
         spatial_features = bin_spatial(feature_image, size=spatial_size)
@@ -168,19 +174,27 @@ def single_img_features(img, color_space='RGB', spatial_size=(32, 32),
         img_features.append(hist_features)
 
     # 7)Compute HOG features if flag is set
+    hog_features = []
+    hog_images = []
     if hog_feat is True:
         if hog_channel == 'ALL':
-            hog_features = []
             for channel in range(feature_image.shape[2]):
-                hog_features.extend(get_hog_features(feature_image[:, :, channel],
-                                    orient, pix_per_cell, cell_per_block,
-                                    vis=False, feature_vec=True))
+                hog_image = get_hog_features(feature_image[:, :, channel],
+                                             orient, pix_per_cell, cell_per_block,
+                                             vis=False, feature_vec=True)
+                hog_images.append(hog_image)
+                hog_features.extend(hog_image)
         else:
-            hog_features = get_hog_features(feature_image[:, :, hog_channel], orient,
-                                            pix_per_cell, cell_per_block, vis=False, feature_vec=True)
+            hog_image = get_hog_features(feature_image[:, :, hog_channel], orient,
+                                         pix_per_cell, cell_per_block, vis=False, feature_vec=True)
+            hog_features = np.copy(hog_image)
 
         # 8)Append features to list
         img_features.append(hog_features)
+
+    # if show_img is True:
+    #     # TODO: Implement visualization for feature extraction
+    #     vis.visualize(imgs=[img, feature_image, ])
 
     # 9)Return concatenated array of features
     return np.concatenate(img_features)
