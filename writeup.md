@@ -87,15 +87,30 @@ I tried various combinations of parameters and...
 
 #### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
-I trained a linear SVM using...
+The code for this step is contained in line 111 through line 118 of the file called `main.py`.
+
+I trained SVM classifier using `rbf` kernel and C parameters set to 10 because it produced better accuracy in validation comparing to the one using linear kernel.
+
+I used HOG features for `Y` channel as well as color features including bin spatial and color histogram.
+
 
 ### Sliding Window Search
 
 #### 1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-I decided to search random window positions at random scales all over the image and came up with this (ok just kidding I didn't actually ;):
+The code for this step is contained in line 133 through line 210 of file `main.py`.
 
-![alt text][image3]
+I decided to use multiple sizes of windows and use different overlap parameters and searching area for the windows. Followings are the three window sizes and their associated parameters. I used more overlaps for larger window sizes so that window search would shift its location to catch vehicle area. 
+
+| Window size   | Overlap param. | Searching area (y-axis) |
+|:-------------:|:--------------:| :----------------------:|
+| 64 x 64       | (0.5, 0.5)     | 380 to 450              | 
+| 96 x 96       | (0.8, 0.8)     | 380 to 550              | 
+| 144 x 144     | (0.8, 0.8)     | 380 to 650              | 
+
+Here's the area showing all the windows:
+
+![alt text][image4]
 
 #### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
