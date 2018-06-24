@@ -76,7 +76,7 @@ Here's the image showing channels in `YCrCb` color space:
 ![alt text][image2]
 
 
-Here's the image showing HOG feature extraction results. I used `Y` channel as input to the HOG because the image of the channel looks good to understand the shape of the car.
+Here's the image showing HOG feature extraction results. I used `Y` channel (ch0) as input to the HOG because the image of the channel looks good to understand the shape of the car.
 
 ![alt text][image3]
 
