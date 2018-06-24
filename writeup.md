@@ -152,5 +152,7 @@ Here's an example result showing the heatmap from a series of frames of video, t
 
 #### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+I faced challanging situation where many false positives are detected on video frames. The false positives includes guard rails and road with tree shadow. I mitigated the false positives by increasing number of training data set (from original 500 to 5,000), changing color space from RGB, HSV to YCrCb, and changing SVM kernel from linear to rbf.
+
+I think I could make it more robust by introducing outlier detection using multiple adjacent frames, and add more not-car (non-vehicle) training data.
 
