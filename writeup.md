@@ -83,7 +83,15 @@ Here's the image showing HOG feature extraction results. I used `Y` channel (ch0
 
 #### 2. Explain how you settled on your final choice of HOG parameters.
 
-I tried various combinations of parameters and...
+I tried various combinations of parameters and I settled the following HOG parameters:
+
+| Parameters     | Values             |
+|:--------------:|:------------------:|
+| Color space    | Y channel of YCrCb | 
+| Orientation    | 9                  | 
+| Pixel per cell | 2                  | 
+
+
 
 #### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
