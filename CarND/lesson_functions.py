@@ -55,6 +55,8 @@ def extract_features(imgs, color_space='RGB', spatial_size=(32, 32),
                      hist_bins=32, orient=9,
                      pix_per_cell=8, cell_per_block=2, hog_channel=0,
                      spatial_feat=True, hist_feat=True, hog_feat=True):
+    print('extract_features()')
+
     # Create a list to append feature vectors to
     features = []
     # Iterate through the list of images
@@ -138,6 +140,10 @@ def single_img_features(img, color_space='RGB', spatial_size=(32, 32),
                         pix_per_cell=8, cell_per_block=2, hog_channel=0,
                         spatial_feat=True, hist_feat=True, hog_feat=True,
                         show_img=False):
+
+    # if show_img is True:
+    #     print(color_space, spatial_size, hist_bins, orient, pix_per_cell, cell_per_block, hog_channel, spatial_feat, hist_feat, hog_feat)
+
     # 1)Define an empty list to receive features
     img_features = []
 
@@ -207,6 +213,8 @@ def search_windows(img, windows, clf, scaler, color_space='RGB', spatial_size=(3
                    pix_per_cell=8, cell_per_block=2, hog_channel=0,
                    spatial_feat=True, hist_feat=True, hog_feat=True):
 
+    print('search_windows()')
+
     # 1)Create an empty list to receive positive detection windows
     on_windows = []
 
@@ -220,7 +228,7 @@ def search_windows(img, windows, clf, scaler, color_space='RGB', spatial_size=(3
                                        orient=orient, pix_per_cell=pix_per_cell,
                                        cell_per_block=cell_per_block,
                                        hog_channel=hog_channel, spatial_feat=spatial_feat,
-                                       hist_feat=hist_feat, hog_feat=hog_feat)
+                                       hist_feat=hist_feat, hog_feat=hog_feat, show_img=True)
         # 5)Scale extracted features to be fed to classifier
         test_features = scaler.transform(np.array(features).reshape(1, -1))
         # 6)Predict using your classifier

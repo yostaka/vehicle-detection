@@ -23,9 +23,9 @@ test_imgs_output_folder = './output_images/test_images/'
 test_imgs = glob.glob('./test_images/test*.jpg')
 cars_imgs = glob.glob('./train_data/vehicles/**/*.png')
 notcars_imgs = glob.glob('./train_data/non-vehicles/**/*.png')
-sample_size = 3000
+sample_size = 5000
 
-generateVideo = False
+generateVideo = True
 video_input = 'test_video.mp4'
 video_output = 'output_images/video_output/test.mp4'
 # video_input = 'project_video.mp4'
@@ -160,7 +160,7 @@ print(round(t2 - t, 2), 'Seconds to train SVC...')
 # Check the score of the SVC
 # print('Test Accuracy of SVC = ', round(svc.score(X_test, y_test), 4))
 y_pred = clf.predict(X_test)
-print('Test Accuracy of SVC = ', round(accuracy_score(y_pred, y_test)), 4)
+print('Test Accuracy of SVC = ', round(accuracy_score(y_pred, y_test), 4))
 # Check the prediction time for a single sample
 t = time.time()
 
@@ -177,7 +177,7 @@ y_start_stops = []
 
 xy_windows.append((64, 64))
 xy_overlaps.append((0.5, 0.5))
-y_start_stops.append([390, 450])
+y_start_stops.append([380, 450])
 
 xy_windows.append((96, 96))
 xy_overlaps.append((0.8, 0.8))
@@ -185,23 +185,20 @@ y_start_stops.append([380, 550])
 
 xy_windows.append((144, 144))
 xy_overlaps.append((0.8, 0.8))
-y_start_stops.append([370, 650])
+y_start_stops.append([380, 650])
 
-# xy_windows.append((220, 220))
-# xy_overlaps.append((0.8, 0.8))
-# y_start_stops.append([360, 650])
 
-# xy_windows.append((120, 120))
-# xy_overlaps.append((0.5, 0.9))
-# y_start_stops.append([380, 550])
-
-# xy_windows.append((160, 160))
+# xy_windows.append((64, 64))
 # xy_overlaps.append((0.5, 0.5))
-# y_start_stops.append([380, 650])
-
-# xy_windows = [(48, 48), (96, 96), (120, 120), (180, 180), (200, 120)]
-# xy_overlaps = [(0.5, 0.5), (0.5, 0.5), (0.5, 0.5), (0.7, 0.7), (0.7, 0.7)]
-# y_start_stops = [[400, 550], [400, 550], [400, 600], [400, 650], [400, 650]]
+# y_start_stops.append([370, 550])
+#
+# xy_windows.append((128, 128))
+# xy_overlaps.append((0.7, 0.7))
+# y_start_stops.append([370, 600])
+#
+# xy_windows.append((192, 192))
+# xy_overlaps.append((0.8, 0.8))
+# y_start_stops.append([370, 650])
 
 
 windows = []
