@@ -2,34 +2,29 @@ import glob
 import time
 
 import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
-import numpy as np
-import cv2
 from moviepy.editor import VideoFileClip
 
 from sklearn.svm import SVC
 from sklearn.preprocessing import StandardScaler
 from sklearn.cross_validation import train_test_split
 from sklearn.metrics import accuracy_score
-import sklearn.grid_search as grid_search
-from skimage.feature import hog
 from CarND.lesson_functions import *
 import CarND.visualize as vis
 
 from scipy.ndimage.measurements import label
 
 # Configurations
-test_imgs_output_folder = './output_images/test_images/'
+test_imgs_output_folder = 'output_images/test_images/'
 test_imgs = glob.glob('./test_images/test*.jpg')
 cars_imgs = glob.glob('./train_data/vehicles/**/*.png')
 notcars_imgs = glob.glob('./train_data/non-vehicles/**/*.png')
 sample_size = 5000
 
 generateVideo = True
-video_input = 'test_video.mp4'
-video_output = 'output_images/video_output/test.mp4'
-# video_input = 'project_video.mp4'
-# video_output = 'output_images/video_output/car_detection.mp4'
+# video_input = 'test_video.mp4'
+# video_output = 'output_images/video_output/test.mp4'
+video_input = 'project_video.mp4'
+video_output = 'output_images/video_output/car_detection.mp4'
 
 runSampleHOGFeatureExtraction = False
 
@@ -80,17 +75,16 @@ cars = cars[0:sample_size]
 notcars = notcars[0:sample_size]
 
 # Configuration parameters for extracting features
-color_space = 'HSV' # Can be RGB, HSV, LUV, HLS, YUV, YCrCb
+color_space = 'YCrCb' # Can be RGB, HSV, LUV, HLS, YUV, YCrCb
 orient = 9  # HOG orientations
 pix_per_cell = 8 # HOG pixels per cell
 cell_per_block = 2 # HOG cells per block
-hog_channel = 'ALL' # Can be 0, 1, 2, or "ALL"
+hog_channel = 0 # Can be 0, 1, 2, or "ALL"
 spatial_size = (32, 32) # Spatial binning dimensions
 hist_bins = 16    # Number of histogram bins
 spatial_feat = True # Spatial features on or off
 hist_feat = True # Histogram features on or off
 hog_feat = True # HOG features on or off
-# y_start_stop = [400, None] # Min and max in y to search in slide_window()
 
 # Visualize feature extractions
 sample_car_img1 = mpimg.imread(cars[0])
@@ -100,15 +94,17 @@ sample_notcar_img2 = mpimg.imread(notcars[1])
 sample_car_img3 = mpimg.imread(cars[2])
 sample_notcar_img3 = mpimg.imread(notcars[2])
 vis.visualize(imgs=[sample_car_img1, sample_car_img2, sample_car_img3, sample_notcar_img1, sample_notcar_img2, sample_notcar_img3],
-              titles=['Car1', 'Car2', 'Car3', 'Not-Car1', 'Not-Car2', 'Not-Car3'], ncols=3)
+              titles=['Car1', 'Car2', 'Car3', 'Not-Car1', 'Not-Car2', 'Not-Car3'], ncols=3,
+              fname=test_imgs_output_folder + 'car-notcar-image.jpg')
 
-# single_img_features(sample_car_img1, color_space=color_space,
-#                     spatial_size=spatial_size, hist_bins=hist_bins,
-#                     orient=orient, pix_per_cell=pix_per_cell,
-#                     cell_per_block=cell_per_block,
-#                     hog_channel=hog_channel, spatial_feat=spatial_feat,
-#                     hist_feat=hist_feat, hog_feat=hog_feat,
-#                     show_img=True)
+single_img_features(sample_car_img1, color_space=color_space,
+                    spatial_size=spatial_size, hist_bins=hist_bins,
+                    orient=orient, pix_per_cell=pix_per_cell,
+                    cell_per_block=cell_per_block,
+                    hog_channel=hog_channel, spatial_feat=spatial_feat,
+                    hist_feat=hist_feat, hog_feat=hog_feat,
+                    show_img=True,
+                    fname=test_imgs_output_folder + 'sample_car')
 
 
 # Feature extractions for car images and not-car images
@@ -146,21 +142,20 @@ X_test = X_scaler.transform(X_test)
 print('Using:', orient, 'orientations', pix_per_cell,
       'pixels per cell and', cell_per_block, 'cells per block')
 print('Feature vector length:', len(X_train[0]))
-# Use a linear SVC
-# parameters = {'kernel': ('linear', 'rbf'), 'C': [1, 10, 30, 50, 100]}
-# parameters = {'kernel': 'rbf', 'C': [10]}
+
+# Use SVC with rbf kernel
 clf = SVC(kernel='rbf', C=10)
-# clf = grid_search.GridSearchCV(svr, parameters)
+
 # Check the training time for the SVC
 t = time.time()
 clf.fit(X_train, y_train)
-# print('Best SVC parameters: ', clf.best_params_)
 t2 = time.time()
 print(round(t2 - t, 2), 'Seconds to train SVC...')
+
 # Check the score of the SVC
-# print('Test Accuracy of SVC = ', round(svc.score(X_test, y_test), 4))
 y_pred = clf.predict(X_test)
 print('Test Accuracy of SVC = ', round(accuracy_score(y_pred, y_test), 4))
+
 # Check the prediction time for a single sample
 t = time.time()
 
@@ -170,10 +165,10 @@ images = glob.glob('./test_images/test*.jpg')
 image = mpimg.imread(images[0])
 image = image.astype(np.float32)/255
 
+# Define search window parameters
 xy_windows = []
 xy_overlaps = []
 y_start_stops = []
-
 
 xy_windows.append((64, 64))
 xy_overlaps.append((0.5, 0.5))
@@ -188,19 +183,6 @@ xy_overlaps.append((0.8, 0.8))
 y_start_stops.append([380, 650])
 
 
-# xy_windows.append((64, 64))
-# xy_overlaps.append((0.5, 0.5))
-# y_start_stops.append([370, 550])
-#
-# xy_windows.append((128, 128))
-# xy_overlaps.append((0.7, 0.7))
-# y_start_stops.append([370, 600])
-#
-# xy_windows.append((192, 192))
-# xy_overlaps.append((0.8, 0.8))
-# y_start_stops.append([370, 650])
-
-
 windows = []
 
 for (xy_window, xy_overlap, y_start_stop) in zip(xy_windows, xy_overlaps, y_start_stops):
@@ -210,8 +192,7 @@ for (xy_window, xy_overlap, y_start_stop) in zip(xy_windows, xy_overlaps, y_star
 
 
 window_img = draw_windows(image, windows)
-plt.imshow(window_img)
-plt.show()
+vis.visualize(imgs=[window_img], titles=['windows'], fname=test_imgs_output_folder+'windows.jpg')
 
 
 def process_image(img, show_img=False):

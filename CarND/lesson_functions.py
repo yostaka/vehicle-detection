@@ -139,10 +139,7 @@ def single_img_features(img, color_space='RGB', spatial_size=(32, 32),
                         hist_bins=32, orient=9,
                         pix_per_cell=8, cell_per_block=2, hog_channel=0,
                         spatial_feat=True, hist_feat=True, hog_feat=True,
-                        show_img=False):
-
-    # if show_img is True:
-    #     print(color_space, spatial_size, hist_bins, orient, pix_per_cell, cell_per_block, hog_channel, spatial_feat, hist_feat, hog_feat)
+                        show_img=False, fname=None):
 
     # 1)Define an empty list to receive features
     img_features = []
@@ -157,13 +154,19 @@ def single_img_features(img, color_space='RGB', spatial_size=(32, 32),
             feature_image = cv2.cvtColor(img, cv2.COLOR_RGB2HLS)
         elif color_space == 'YUV':
             feature_image = cv2.cvtColor(img, cv2.COLOR_RGB2YUV)
-        elif color_space == 'YCrCb':
+        else:   # assumes color_space == 'YCrCb'
             feature_image = cv2.cvtColor(img, cv2.COLOR_RGB2YCrCb)
     else:
         feature_image = np.copy(img)
 
-    # Append flatten feature_image to img_features
-    # img_features.append(feature_image.ravel())
+    if show_img is True:
+        ch0_img = feature_image[:, :, 0]
+        ch1_img = feature_image[:, :, 1]
+        ch2_img = feature_image[:, :, 2]
+        vis.visualize(imgs=[img, ch0_img, ch1_img, ch2_img],
+                      titles=['Original', 'ch0', 'ch1', 'ch2'],
+                      cmaps=[None, 'gray', 'gray', 'gray'],
+                      fname=fname.split('.')[0] + '_feature_image.jpg')
 
     # 3)Compute spatial features if flag is set
     if spatial_feat is True:
@@ -191,16 +194,21 @@ def single_img_features(img, color_space='RGB', spatial_size=(32, 32),
                 hog_images.append(hog_image)
                 hog_features.extend(hog_image)
         else:
-            hog_image = get_hog_features(feature_image[:, :, hog_channel], orient,
-                                         pix_per_cell, cell_per_block, vis=False, feature_vec=True)
+            if show_img is True:
+                hog_image, hog_img = get_hog_features(feature_image[:, :, hog_channel], orient,
+                                                      pix_per_cell, cell_per_block, vis=True, feature_vec=True)
+                vis.visualize(imgs=[feature_image[:, :, hog_channel], hog_img],
+                              titles=['Original', 'Hog feature'],
+                              cmaps=['gray', 'gray'],
+                              fname=fname.split('.')[0] + '_hog_image.jpg')
+
+            else:
+                hog_image = get_hog_features(feature_image[:, :, hog_channel], orient,
+                                             pix_per_cell, cell_per_block, vis=False, feature_vec=True)
             hog_features = np.copy(hog_image)
 
         # 8)Append features to list
         img_features.append(hog_features)
-
-    # if show_img is True:
-    #     # TODO: Implement visualization for feature extraction
-    #     vis.visualize(imgs=[img, feature_image, ])
 
     # 9)Return concatenated array of features
     return np.concatenate(img_features)
@@ -212,8 +220,6 @@ def search_windows(img, windows, clf, scaler, color_space='RGB', spatial_size=(3
                    hist_bins=32, orient=9,
                    pix_per_cell=8, cell_per_block=2, hog_channel=0,
                    spatial_feat=True, hist_feat=True, hog_feat=True):
-
-    print('search_windows()')
 
     # 1)Create an empty list to receive positive detection windows
     on_windows = []
@@ -228,7 +234,7 @@ def search_windows(img, windows, clf, scaler, color_space='RGB', spatial_size=(3
                                        orient=orient, pix_per_cell=pix_per_cell,
                                        cell_per_block=cell_per_block,
                                        hog_channel=hog_channel, spatial_feat=spatial_feat,
-                                       hist_feat=hist_feat, hog_feat=hog_feat, show_img=True)
+                                       hist_feat=hist_feat, hog_feat=hog_feat)
         # 5)Scale extracted features to be fed to classifier
         test_features = scaler.transform(np.array(features).reshape(1, -1))
         # 6)Predict using your classifier
