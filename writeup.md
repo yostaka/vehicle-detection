@@ -31,17 +31,17 @@ Here's the code structure for this project:
 
 ```
 .
-+--- CarND/         # Functions built for vehicle detection
++--- CarND/             # Functions built for vehicle detection
 |  +--- lesson_functions.py
 |  +--- visualize.py
 |
 +--- output_images/
-|  +--- test_images/   # Image outputs
+|  +--- test_images/    # Image outputs
 |  +--- video_output/   # Video outputs
 |
-+--- train_data/   # Training data for car and not-car images, and their labels
++--- train_data/        # Training data for car and not-car images, and their labels
 |
-+--- main.py    # Main code - entry point for the vehicle detection
++--- main.py            # Main code - entry point for the vehicle detection
 ```
 
 
