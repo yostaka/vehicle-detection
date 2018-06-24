@@ -26,41 +26,6 @@ generateVideo = True
 video_input = 'project_video.mp4'
 video_output = 'output_images/video_output/car_detection.mp4'
 
-runSampleHOGFeatureExtraction = False
-
-if runSampleHOGFeatureExtraction is True:
-    # Extract HOG features from training images
-    sample_car_img = mpimg.imread('./train_data/vehicles/GTI_MiddleClose/image0190.png')
-    sample_notcar_img = mpimg.imread('./train_data/non-vehicles/GTI/image18.png')
-
-    vis.visualize(imgs=[sample_car_img, sample_notcar_img],
-                  titles=['Car', 'Not-Car'],
-                  fname=test_imgs_output_folder + 'car-notcar-image.jpg')
-
-    # Perform a Histogram of Oriented Gradients (HOG) feature extraction on a labeled training set of images
-    # and train a classifier Linear SVM classifier
-    print('Performing HOG feature extraction...')
-    for idx, fname in enumerate(test_imgs):
-        print('  Processing', fname)
-        image = mpimg.imread(fname)
-        gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
-        features, hog_img = get_hog_features(gray, orient=9, pix_per_cell=8, cell_per_block=2, vis=True, feature_vec=False)
-
-        vis.visualize(imgs=[image, hog_img],
-                      titles=['Original: ' + fname.split('/')[-1],
-                       'HOG feature extraction'],
-                      cmaps=[None, 'gray'],
-                      fname=test_imgs_output_folder + fname.split('/')[-1].split('.')[0] + '.jpg')
-
-
-# (Optional) Apply a color transform and append binned color features, as well as histograms of color
-# to HOG feature vector
-
-
-# Search for vehicles in images by sliding-window technique with the trained classifier
-# print('Searching for vehicles by sliding-window...')
-# for idx, fname in enumerate(test_imgs):
-
 # Read in cars and not cars
 cars = []
 notcars = []
