@@ -65,7 +65,7 @@ You're reading it!
 
 The code for this step is contained in lines 75 through line 88 of the file called `main.py`.
 
-I started by reading in 5000 images for `vehicle` and `non-vehicle` images respectively.  Here is an example of three of each of the `vehicle` and `non-vehicle` classes:
+I started by reading in 5000 images for `vehicle` and `non-vehicle` images respectively.  Here is an example of three of each of the `vehicle`(shown as `Car`) and `non-vehicle` classes (shown as `Not-Car`):
 
 ![alt text][image1]
 
