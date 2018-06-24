@@ -91,6 +91,7 @@ I tried various combinations of parameters and I settled the following HOG param
 | Orientation    | 9                  | 
 | Pixel per cell | 2                  | 
 
+I selected the YCrCb color space and Y cahannel for the HOG feature extraction because the image of Y channel looks suitable to extract characteristics of vechicle shapes. Orienation of 9 and pixel per cell is picked so I can keep the shape characteristics and also I can remove unnecessary details so the trained model can be generic. 
 
 
 #### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
