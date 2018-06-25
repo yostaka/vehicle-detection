@@ -63,9 +63,9 @@ You're reading it!
 
 #### 1. Explain how (and identify where in your code) you extracted HOG features from the training images.
 
-The code for this step is contained in lines 75 through line 88 of the file called `main.py`.
+The code for this step is contained in lines 81 through line 93 of the file called `main.py`.
 
-I started by reading in 5000 images for `vehicle` and `non-vehicle` images respectively.  Here is an example of three of each of the `vehicle`(shown as `Car`) and `non-vehicle` classes (shown as `Not-Car`):
+I started by reading in all images available for `vehicle` and `non-vehicle` images respectively.  Here is an example of three of each of the `vehicle`(shown as `Car`) and `non-vehicle` classes (shown as `Not-Car`):
 
 ![alt text][image1]
 
@@ -96,9 +96,9 @@ I selected the YCrCb color space and Y cahannel for the HOG feature extraction b
 
 #### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
-The code for this step is contained in line 111 through line 118 of the file called `main.py`.
+The code for this step is contained in line 118 through line 123 of the file called `main.py`.
 
-I trained SVM classifier using `rbf` kernel and C parameters set to 10 because it produced better accuracy in validation comparing to the one using linear kernel.
+I trained SVM classifier using `rbf` kernel and C parameters set to 10 because it produced better accuracy in validation comparing to the one using linear kernel. I picked up those values using GridSearchCV.
 
 I used HOG features for `Y` channel as well as color features including bin spatial and color histogram.
 
@@ -111,11 +111,13 @@ The code for this step is contained in line 133 through line 210 of file `main.p
 
 I decided to use multiple sizes of windows and use different overlap parameters and searching area for the windows. Followings are the three window sizes and their associated parameters. I used more overlaps for larger window sizes so that window search would shift its location to catch vehicle area. 
 
-| Window size   | Overlap param. | Searching area (y-axis) |
-|:-------------:|:--------------:| :----------------------:|
-| 64 x 64       | (0.5, 0.5)     | 380 to 450              | 
-| 96 x 96       | (0.8, 0.8)     | 380 to 550              | 
-| 144 x 144     | (0.8, 0.8)     | 380 to 650              | 
+Also, I limit the searching area where cars will not appear to speed up the vehicle detection process.
+
+| Window size   | Overlap param. | Searching area (y-axis) | Searching area (x-axis) |
+|:-------------:|:--------------:| :----------------------:|:-----------------------:|
+| 64 x 64       | (0.5, 0.5)     | 380 to 450              | 600 to the right end    |
+| 96 x 96       | (0.6, 0.6)     | 380 to 550              | 600 to the right end    |
+| 128 x 128     | (0.8, 0.8)     | 380 to 650              | 600 to the right end    |
 
 Here's the area showing all the windows:
 
