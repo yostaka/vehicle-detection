@@ -1,5 +1,6 @@
 import glob
 import time
+import pickle
 
 import matplotlib.pyplot as plt
 from moviepy.editor import VideoFileClip
@@ -18,7 +19,10 @@ test_imgs_output_folder = 'output_images/test_images/'
 test_imgs = glob.glob('./test_images/test*.jpg')
 cars_imgs = glob.glob('./train_data/vehicles/**/*.png')
 notcars_imgs = glob.glob('./train_data/non-vehicles/**/*.png')
-sample_size = 5000
+# sample_size = 500
+
+refitModel = True
+classifier_output = 'clf.binary'
 
 generateVideo = True
 # video_input = 'test_video.mp4'
@@ -36,8 +40,8 @@ for img_fname in notcars_imgs:
     notcars.append(img_fname)
 
 # Reduce the sample size
-cars = cars[0:sample_size]
-notcars = notcars[0:sample_size]
+# cars = cars[0:sample_size]
+# notcars = notcars[0:sample_size]
 
 # Configuration parameters for extracting features
 color_space = 'YCrCb' # Can be RGB, HSV, LUV, HLS, YUV, YCrCb
@@ -73,56 +77,73 @@ single_img_features(sample_car_img1, color_space=color_space,
 
 
 # Feature extractions for car images and not-car images
-car_features = extract_features(cars, color_space=color_space,
-                                spatial_size=spatial_size, hist_bins=hist_bins,
-                                orient=orient, pix_per_cell=pix_per_cell,
-                                cell_per_block=cell_per_block,
-                                hog_channel=hog_channel, spatial_feat=spatial_feat,
-                                hist_feat=hist_feat, hog_feat=hog_feat)
+if refitModel is True:
+    car_features = extract_features(cars, color_space=color_space,
+                                    spatial_size=spatial_size, hist_bins=hist_bins,
+                                    orient=orient, pix_per_cell=pix_per_cell,
+                                    cell_per_block=cell_per_block,
+                                    hog_channel=hog_channel, spatial_feat=spatial_feat,
+                                    hist_feat=hist_feat, hog_feat=hog_feat)
 
-notcar_features = extract_features(notcars, color_space=color_space,
-                                   spatial_size=spatial_size, hist_bins=hist_bins,
-                                   orient=orient, pix_per_cell=pix_per_cell,
-                                   cell_per_block=cell_per_block,
-                                   hog_channel=hog_channel, spatial_feat=spatial_feat,
-                                   hist_feat=hist_feat, hog_feat=hog_feat)
+    notcar_features = extract_features(notcars, color_space=color_space,
+                                       spatial_size=spatial_size, hist_bins=hist_bins,
+                                       orient=orient, pix_per_cell=pix_per_cell,
+                                       cell_per_block=cell_per_block,
+                                       hog_channel=hog_channel, spatial_feat=spatial_feat,
+                                       hist_feat=hist_feat, hog_feat=hog_feat)
 
-# Create an array stack of feature vectors
-X = np.vstack((car_features, notcar_features)).astype(np.float64)
+    # Create an array stack of feature vectors
+    X = np.vstack((car_features, notcar_features)).astype(np.float64)
 
-# Define the labels vector
-y = np.hstack((np.ones(len(car_features)), np.zeros(len(notcar_features))))
+    # Define the labels vector
+    y = np.hstack((np.ones(len(car_features)), np.zeros(len(notcar_features))))
 
-# Split up data into randomized training and test sets
-rand_state = np.random.randint(0, 100)
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=rand_state)
+    # Split up data into randomized training and test sets
+    rand_state = np.random.randint(0, 100)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=rand_state)
 
-# Fit a per-column scaler
-X_scaler = StandardScaler().fit(X_train)
-# Apply the scaler to X
-X_train = X_scaler.transform(X_train)
-X_test = X_scaler.transform(X_test)
+    # Fit a per-column scaler
+    X_scaler = StandardScaler().fit(X_train)
+    # Apply the scaler to X
+    X_train = X_scaler.transform(X_train)
+    X_test = X_scaler.transform(X_test)
 
-print('Using:', orient, 'orientations', pix_per_cell,
-      'pixels per cell and', cell_per_block, 'cells per block')
-print('Feature vector length:', len(X_train[0]))
+    print('Using:', orient, 'orientations', pix_per_cell,
+          'pixels per cell and', cell_per_block, 'cells per block')
+    print('Feature vector length:', len(X_train[0]))
 
-# Use SVC with rbf kernel
-clf = SVC(kernel='rbf', C=10)
+    print('Training model...')
+    # Use SVC with rbf kernel
+    clf = SVC(kernel='rbf', C=10)
 
-# Check the training time for the SVC
-t = time.time()
-clf.fit(X_train, y_train)
-t2 = time.time()
-print(round(t2 - t, 2), 'Seconds to train SVC...')
+    # Check the training time for the SVC
+    t = time.time()
 
-# Check the score of the SVC
-y_pred = clf.predict(X_test)
-print('Test Accuracy of SVC = ', round(accuracy_score(y_pred, y_test), 4))
+    clf.fit(X_train, y_train)
+
+    t2 = time.time()
+    print(round(t2 - t, 2), 'Seconds to train SVC...')
+
+    # Check the score of the SVC
+    print('calculating model accuracy...')
+    y_pred = clf.predict(X_test)
+    print('Test Accuracy of SVC = ', round(accuracy_score(y_pred, y_test), 4))
+
+    with open(classifier_output, mode='wb') as file:
+        pickle.dump([clf, X_scaler], file)
+
+else:
+    with open(classifier_output, mode='rb') as file:
+        [clf, X_scaler] = pickle.load(file)
+        print('Model loaded from the file')
+
+
 
 # Check the prediction time for a single sample
-t = time.time()
+# t = time.time()
+
+
 
 
 images = glob.glob('./test_images/test*.jpg')
@@ -133,25 +154,29 @@ image = image.astype(np.float32)/255
 # Define search window parameters
 xy_windows = []
 xy_overlaps = []
+x_start_stops = []
 y_start_stops = []
 
 xy_windows.append((64, 64))
 xy_overlaps.append((0.5, 0.5))
+x_start_stops.append([600, None])
 y_start_stops.append([380, 450])
 
 xy_windows.append((96, 96))
-xy_overlaps.append((0.8, 0.8))
+xy_overlaps.append((0.6, 0.6))
+x_start_stops.append([600, None])
 y_start_stops.append([380, 550])
 
-xy_windows.append((144, 144))
+xy_windows.append((128, 128))
 xy_overlaps.append((0.8, 0.8))
+x_start_stops.append([600, None])
 y_start_stops.append([380, 650])
 
 
 windows = []
 
-for (xy_window, xy_overlap, y_start_stop) in zip(xy_windows, xy_overlaps, y_start_stops):
-    window = slide_window(image, x_start_stop=[None, None], y_start_stop=y_start_stop,
+for (xy_window, xy_overlap, x_start_stop, y_start_stop) in zip(xy_windows, xy_overlaps, x_start_stops, y_start_stops):
+    window = slide_window(image, x_start_stop=x_start_stop, y_start_stop=y_start_stop,
                           xy_window=xy_window, xy_overlap=xy_overlap)
     windows.extend(window)
 
