@@ -29,6 +29,9 @@ generateVideo = True
 # video_output = 'output_images/video_output/test.mp4'
 video_input = 'project_video.mp4'
 video_output = 'output_images/video_output/car_detection.mp4'
+# video_output = 'output_images/video_output/car_detection_test.mp4'
+video_clip_range = [None, None]
+# video_clip_range = [18, 20]
 
 # Read in cars and not cars
 cars = []
@@ -139,14 +142,8 @@ else:
         print('Model loaded from the file')
 
 
-
-# Check the prediction time for a single sample
-# t = time.time()
-
-
-
-
 images = glob.glob('./test_images/test*.jpg')
+# images = glob.glob('./test_images/test3.jpg')
 
 image = mpimg.imread(images[0])
 image = image.astype(np.float32)/255
@@ -158,12 +155,12 @@ x_start_stops = []
 y_start_stops = []
 
 xy_windows.append((64, 64))
-xy_overlaps.append((0.5, 0.5))
+xy_overlaps.append((0.7, 0.7))
 x_start_stops.append([600, None])
-y_start_stops.append([380, 450])
+y_start_stops.append([380, 500])
 
 xy_windows.append((96, 96))
-xy_overlaps.append((0.6, 0.6))
+xy_overlaps.append((0.7, 0.7))
 x_start_stops.append([600, None])
 y_start_stops.append([380, 550])
 
@@ -245,7 +242,11 @@ for fname in images:
 # Build video clip with car detection
 
 if generateVideo is True:
-    clip1 = VideoFileClip(video_input)
+    if video_clip_range[0] is None:
+        clip1 = VideoFileClip(video_input)
+    else:
+        clip1 = VideoFileClip(video_input).subclip(video_clip_range[0], video_clip_range[1])
+
     video_clip = clip1.fl_image(process_image)
     video_clip.write_videofile(video_output, audio=False)
 
