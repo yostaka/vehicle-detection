@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 
 
 def visualize(imgs, titles, cmaps=None, fname=None, ncols=None):
+    return
     num_images = len(imgs)
 
     if len(imgs) == 1:

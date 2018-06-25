@@ -12,6 +12,8 @@ from sklearn.metrics import accuracy_score
 from CarND.lesson_functions import *
 import CarND.visualize as vis
 
+from collections import deque
+
 from scipy.ndimage.measurements import label
 
 # Configurations
@@ -32,6 +34,7 @@ video_output = 'output_images/video_output/car_detection.mp4'
 # video_output = 'output_images/video_output/car_detection_test.mp4'
 video_clip_range = [None, None]
 # video_clip_range = [18, 20]
+cache = deque(maxlen=6)
 
 # Read in cars and not cars
 cars = []
@@ -51,7 +54,7 @@ color_space = 'YCrCb' # Can be RGB, HSV, LUV, HLS, YUV, YCrCb
 orient = 9  # HOG orientations
 pix_per_cell = 8 # HOG pixels per cell
 cell_per_block = 2 # HOG cells per block
-hog_channel = 0 # Can be 0, 1, 2, or "ALL"
+hog_channel = 'ALL' # Can be 0, 1, 2, or "ALL"
 spatial_size = (32, 32) # Spatial binning dimensions
 hist_bins = 16    # Number of histogram bins
 spatial_feat = True # Spatial features on or off
@@ -211,7 +214,11 @@ def process_image(img, show_img=False):
         plt.show()
 
     heat = add_heat(heat, hot_windows)
-    heat = apply_threshold(heat, 2)
+
+    cache.append(heat)
+    heat = np.sum(cache, axis=0)
+
+    heat = apply_threshold(heat, 6)
     labels = label(heat)
 
     if show_img is True:
@@ -229,7 +236,8 @@ def process_image(img, show_img=False):
 
 for fname in images:
     image = mpimg.imread(fname)
-    process_image(image, show_img=True)
+    # process_image(image, show_img=True)
+    process_image(image, show_img=False)
 
 
 # Run pipeline on a video stream (start with the test_video.mp4 and later implement on full project_video.mp4)
