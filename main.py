@@ -236,8 +236,8 @@ def process_image(img, show_img=False):
 
 for fname in images:
     image = mpimg.imread(fname)
-    # process_image(image, show_img=True)
-    process_image(image, show_img=False)
+    process_image(image, show_img=True)
+    # process_image(image, show_img=False)
 
 
 # Run pipeline on a video stream (start with the test_video.mp4 and later implement on full project_video.mp4)
