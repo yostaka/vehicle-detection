@@ -63,7 +63,7 @@ You're reading it!
 
 #### 1. Explain how (and identify where in your code) you extracted HOG features from the training images.
 
-The code for this step is contained in lines 81 through line 93 of the file called `main.py`.
+The code for this step is contained in lines 87 through line 99 of the file called `main.py`.
 
 I started by reading in all images available for `vehicle` and `non-vehicle` images respectively.  Here is an example of three of each of the `vehicle`(shown as `Car`) and `non-vehicle` classes (shown as `Not-Car`):
 
@@ -76,7 +76,7 @@ Here's the image showing channels in `YCrCb` color space:
 ![alt text][image2]
 
 
-Here's the image showing HOG feature extraction results. I used `Y` channel (ch0) as input to the HOG because the image of the channel looks good to understand the shape of the car.
+Here's the image showing HOG feature extraction results. I used `ALL` channel (ch0) as input because it produces better accuracy on test set.
 
 ![alt text][image3]
 
@@ -85,18 +85,18 @@ Here's the image showing HOG feature extraction results. I used `Y` channel (ch0
 
 I tried various combinations of parameters and I settled the following HOG parameters:
 
-| Parameters     | Values             |
-|:--------------:|:------------------:|
-| Color space    | Y channel of YCrCb | 
-| Orientation    | 9                  | 
-| Pixel per cell | 2                  | 
+| Parameters     | Values               |
+|:--------------:|:--------------------:|
+| Color space    | ALL channel of YCrCb | 
+| Orientation    | 9                    | 
+| Pixel per cell | 2                    | 
 
-I selected the YCrCb color space and Y cahannel for the HOG feature extraction because the image of Y channel looks suitable to extract characteristics of vechicle shapes. Orienation of 9 and pixel per cell is picked so I can keep the shape characteristics and also I can remove unnecessary details so the trained model can be generic. 
+I selected the YCrCb color space and ALL cahannels for the HOG feature extraction. Orienation of 9 and pixel per cell is picked so I can keep the shape characteristics and also I can remove unnecessary details so the trained model can be generic. 
 
 
 #### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
-The code for this step is contained in line 118 through line 123 of the file called `main.py`.
+The code for this step is contained in line 124 through line 129 of the file called `main.py`.
 
 I trained SVM classifier using `rbf` kernel and C parameters set to 10 because it produced better accuracy in validation comparing to the one using linear kernel. I picked up those values using GridSearchCV.
 
@@ -138,6 +138,7 @@ I optimized my classifier to changing its kernel from linear to rbf, and selecte
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
 Here's a [link to my video result](./output_images/video_output/car_detection.mp4)
 
+Please note that first several frames of video has bounding boxes though there is no car. This occured because previous steps of the code generted the box and those are in cache. I could remove them easily, but it is remained as of now (it is just a matter of time to change a code to clear the cache and reproduce the video, but I did not have enough time to reproduce the video).
 
 #### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
 
@@ -163,7 +164,7 @@ Here's an example result showing the heatmap from a series of frames of video, t
 
 #### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-I faced challanging situation where many false positives are detected on video frames. The false positives includes guard rails and road with tree shadow. I mitigated the false positives by increasing number of training data set (from original 500 to 5,000), changing color space from RGB, HSV to YCrCb, and changing SVM kernel from linear to rbf.
+I faced challanging situation where many false positives are detected on video frames. The false positives includes guard rails and road with tree shadow. I mitigated the false positives by increasing number of training data set to full set of images(from original 500), changing color space from RGB, HSV to YCrCb, and changing SVM kernel from linear to rbf.
 
-I think I could make it more robust by introducing outlier detection using multiple adjacent frames, and add more not-car (non-vehicle) training data.
+I think I could make it more robust by adding more not-car (non-vehicle) training data.
 
